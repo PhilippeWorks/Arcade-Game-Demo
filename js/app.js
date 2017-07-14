@@ -46,15 +46,27 @@ Player.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function(){
-
+Player.prototype.handleInput = function(exp){
+    switch(exp) {
+        case 'left':
+        this.x--;
+        break;
+        case 'up':
+        this.y++;
+        break;
+        case 'right':
+        this.x++;
+        break;
+        case 'down':
+        this.y--;
+    }
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var allEnemies = [new Enemy(2,1,1), new Enemy(2,1,1), new Enemy(2,1,1)];
+var allEnemies = [new Enemy(2,1,32), new Enemy(2,1,1), new Enemy(2,1,1)];
 
 var player = new Player();
 
@@ -68,6 +80,5 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
