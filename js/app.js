@@ -1,3 +1,5 @@
+// canvas 505x606, 1square 100x81
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speedx) {
     // Variables applied to each of our instances go here,
@@ -30,9 +32,9 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player =  function () {
-	this.x = 10,
-	this.y = 10,
+var Player =  function (x, y) {
+	this.x = x,
+	this.y = y,
 	this.speed = 0,
 	this.sprite = 'images/char-boy.png'
 };
@@ -49,26 +51,32 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(exp){
     switch(exp) {
         case 'left':
-        this.x--;
+        this.x -= 101;
         break;
         case 'up':
-        this.y++;
+        this.y -= 83;
         break;
         case 'right':
-        this.x++;
+        this.x += 101;
         break;
         case 'down':
-        this.y--;
+        this.y += 83;
     }
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+// var Enemy = function(x, y, speedx)
+// canvas 505x606, 1square 101x83
 
-var allEnemies = [new Enemy(2,1,32), new Enemy(2,1,1), new Enemy(2,1,1)];
+var allEnemies = [
+    new Enemy(0, 83, 32), 
+    new Enemy(0, 2*83, 1), 
+    new Enemy(0, 3*83, 1)
+    ];
 
-var player = new Player();
+var player = new Player(202, 415);
 
 
 // This listens for key presses and sends the keys to your
