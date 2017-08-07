@@ -6,7 +6,7 @@ var Enemy = function(x, y, speedx) {
     // we've provided one for you to get started
     this.x = x,
     this.y = y,
-    this.speedx = Math.random() + speedx,
+    this.speedx = speedx,
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
 
@@ -20,7 +20,12 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = this.x + this.speedx*dt
+    //Reset enemies position once off screen
+    if (this.x > 505) {
+        this.x = -101;
+    } else {
+        this.x = this.x + this.speedx*dt;
+    };
 };
 
 // Draw the enemy on the screen, required method for game
@@ -79,9 +84,10 @@ Player.prototype.handleInput = function(exp){
 // canvas 505x606, 1square 101x83
 
 var allEnemies = [
-    new Enemy(0, 83, 32), 
-    new Enemy(202, 2*83, 1), 
-    new Enemy(404, 3*83, 1)
+    new Enemy(0, 83, 150), 
+    new Enemy(202, 2*83, 185), 
+    new Enemy(404, 3*83, 200),
+    new Enemy(303, 2*83, 185)
     ];
 
 var player = new Player(202, 415);
