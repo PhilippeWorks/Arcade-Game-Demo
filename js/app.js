@@ -6,12 +6,12 @@ var Enemy = function(x, y, speedx) {
     // we've provided one for you to get started
     this.x = x,
     this.y = y,
-    this.speedx = Math.random() + speedx
+    this.speedx = Math.random() + speedx,
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
 
     //turn this into an array of enemies
-    this.sprite = 'images/enemy-bug.png';
+    this.sprite = 'images/enemy-bug.png'
 };
 
 // Update the enemy's position, required method for game
@@ -51,16 +51,24 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(exp){
     switch(exp) {
         case 'left':
-        this.x -= 101;
+            if (this.x != 0) {
+                this.x -= 101;
+            };
         break;
         case 'up':
-        this.y -= 83;
+            if (this.y != 0) {
+                this.y -= 83;
+            };
         break;
         case 'right':
-        this.x += 101;
+            if (this.x != 404) {
+                this.x += 101;
+            };
         break;
         case 'down':
-        this.y += 83;
+            if (this.y != 415) {
+                this.y += 83;
+            };
     }
 };
 
@@ -72,8 +80,8 @@ Player.prototype.handleInput = function(exp){
 
 var allEnemies = [
     new Enemy(0, 83, 32), 
-    new Enemy(0, 2*83, 1), 
-    new Enemy(0, 3*83, 1)
+    new Enemy(202, 2*83, 1), 
+    new Enemy(404, 3*83, 1)
     ];
 
 var player = new Player(202, 415);
