@@ -138,7 +138,7 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-        ctx.drawImage(Resources.get('images/Star.png'), 202, 0);
+
 
         renderEntities();
     }
@@ -154,6 +154,10 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
+
+        allTargets.forEach(function(target) {
+            target.render();
+        })
 
         player.render();
     }
@@ -247,7 +251,11 @@ var Engine = (function(global) {
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
         'images/Selector.png',
-        'images/Star.png'
+        'images/Star.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'
+
     ]);
     Resources.onReady(init);
 
