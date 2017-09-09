@@ -1,61 +1,60 @@
 // canvas 505x606, 1square 100x81
 
-// Enemies our player must avoid
+// Enemy class
 let Enemy = function(x, y, speedx) {
-    // variables applied to each of our instances go here,
-    // we've provided one for you to get started
     this.x = x,
     this.y = y,
-    this.speedx = (Math.random()+1)*speedx,
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-
-    //turn this into an array of enemies
+    this.speedx = (Math.random() + 1)*speedx,
     this.sprite = 'images/enemy-bug.png'
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+
+// Updates the enemy's position when offscreen
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
     //Reset enemies position once off screen
-    if (this.x > 505) {
+    if (this.x > 808) {
         this.x = -101;
     } else {
         this.x = this.x + this.speedx*dt;
     };
 };
 
-// Draw the enemy on the screen, required method for game
+
+// Draws enemies
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 
-let Player =  function (x, y) {
+//Player class
+let Player =  function(x, y, sprite) {
 	this.x = x,
 	this.y = y,
-	this.sprite = 'images/char-boy.png'
+	this.sprite = sprite
 };
 
+
+//player-enemy collision detection
 Player.prototype.update = function() {
     for (let i = 0; i < allEnemies.length; i++) {
                 if (this.y == allEnemies[i].y && this.x + 60 > allEnemies[i].x && this.x < allEnemies[i].x + 60) {
-                    this.x = 202;
-                    this.y = 415;
+                    this.x = 303;
+                    this.y = 7*83;
             };
         };
 };
 
+
+//Draws player
 Player.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+
+//controls
 Player.prototype.handleInput = function(exp){
     switch(exp) {
         case 'left':
@@ -69,36 +68,45 @@ Player.prototype.handleInput = function(exp){
             };
         break;
         case 'right':
-            if (this.x != 404) {
+            if (this.x != 606) {
                 this.x += 101;
             };
         break;
         case 'down':
-            if (this.y != 415) {
+            if (this.y != 7*83) {
                 this.y += 83;
             };
     }
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+
 // let Enemy = function(x, y, speedx)
 // canvas 505x606, 1square 101x83
 let allEnemies = [
-    new Enemy(0, 83, 150), 
-    new Enemy(202, 2*83, 185), 
+    new Enemy(0, 83, 150),
+    new Enemy(0, 4*83, 165),
+    new Enemy(0, 2*83, 215),
+    new Enemy(101, 3*83, 160), 
+    new Enemy(101, 6*83, 190),
+    new Enemy(101, 5*83, 230),
+    new Enemy(202, 2*83, 185),
+    new Enemy(202, 3*83, 220),
+    new Enemy(303, 83, 170),
+    new Enemy(404, 2*83, 185), 
     new Enemy(404, 3*83, 200),
-    new Enemy(404, 2*83, 185),
-    new Enemy(101, 3*83, 160),
-    new Enemy(303, 83, 170)
+    new Enemy(505, 4*83, 175),
+    new Enemy(606, 6*83, 200),
+    new Enemy(606, 5*83, 195),
+    new Enemy(707, 6*83, 210)
     ];
 
-let player = new Player(202, 415);
+
+
+
 
 
 // This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// Player.handleInput() method.
 document.addEventListener('keyup', function(e) {
     let allowedKeys = {
         37: 'left',

@@ -25,8 +25,8 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 505;
-    canvas.height = 606;
+    canvas.width = 707;
+    canvas.height = 808;
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -65,8 +65,8 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
-        lastTime = Date.now();
-        main();
+
+        
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -108,15 +108,18 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
+                'images/grass-block.png',   // Top row is water
                 'images/stone-block.png',   // Row 1 of 3 of stone
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/stone-block.png',   // Row 1 of 2 of grass
+                'images/stone-block.png',    // Row 2 of 2 of grass
+                'images/stone-block.png',
+                'images/grass-block.png',
+
             ],
-            numRows = 6,
-            numCols = 5,
+            numRows = 8,
+            numCols = 7,
             row, col;
 
         /* Loop through the number of rows and columns we've defined above
@@ -135,6 +138,7 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
+        ctx.drawImage(Resources.get('images/Star.png'), 202, 0);
 
         renderEntities();
     }
@@ -160,7 +164,70 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
-    }
+        let spriteImage;
+        let selectorX = 0;
+
+        let renderMenu = function () {
+            ctx.drawImage(Resources.get('images/Selector.png'), selectorX, 166);
+            ctx.drawImage(Resources.get('images/char-boy.png'), 0, 166);
+            ctx.drawImage(Resources.get('images/char-cat-girl.png'), 101, 166);
+            ctx.drawImage(Resources.get('images/char-horn-girl.png'), 202, 166);
+            ctx.drawImage(Resources.get('images/char-pink-girl.png'), 303, 166);
+            ctx.drawImage(Resources.get('images/char-princess-girl.png'), 404, 166);
+
+        }
+        renderMenu();
+
+        let resetHandleInput = function(direction) {
+            switch(direction) {
+                case 'space':
+                    switch(selectorX) {
+                        case 0:
+                            spriteImage = 'images/char-boy.png'
+                        break;
+                        case 101:
+                            spriteImage = 'images/char-cat-girl.png'
+                        break;
+                        case 202:
+                            spriteImage = 'images/char-horn-girl.png'
+                        break;
+                        case 303:
+                            spriteImage = 'images/char-pink-girl.png'
+                        break;
+                        case 404:
+                            spriteImage = 'images/char-princess-girl.png'
+                    }
+                    global.player = new Player(303, 7*83, spriteImage);
+                    lastTime = Date.now();
+                    main();                     
+                break;
+                case 'left':
+                    if (selectorX != 0) {
+                        selectorX -= 101;
+                    };
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    win.requestAnimationFrame(renderMenu);
+                break;
+                case 'right':
+                    if (selectorX != 404) {
+                        selectorX += 101;
+                    };
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    win.requestAnimationFrame(renderMenu);
+            };
+        }
+
+
+        document.addEventListener('keyup', function(e) {
+            let allowedKeys = {
+                32: 'space',
+                37: 'left',
+                39: 'right'
+            };
+            resetHandleInput(allowedKeys[e.keyCode]);
+        });
+  
+    };
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
@@ -171,7 +238,13 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/Selector.png',
+        'images/Star.png'
     ]);
     Resources.onReady(init);
 
