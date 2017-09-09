@@ -165,23 +165,13 @@ var Engine = (function(global) {
     function reset() {
         // noop
         let spriteImage;
-        let selectorX = 0;
-
-        let renderMenu = function () {
-            ctx.drawImage(Resources.get('images/Selector.png'), selectorX, 166);
-            ctx.drawImage(Resources.get('images/char-boy.png'), 0, 166);
-            ctx.drawImage(Resources.get('images/char-cat-girl.png'), 101, 166);
-            ctx.drawImage(Resources.get('images/char-horn-girl.png'), 202, 166);
-            ctx.drawImage(Resources.get('images/char-pink-girl.png'), 303, 166);
-            ctx.drawImage(Resources.get('images/char-princess-girl.png'), 404, 166);
-
-        }
-        renderMenu();
-
-        let resetHandleInput = function(direction) {
-            switch(direction) {
+        let selector = {
+            x: 0,
+            resetHandleInput: (direction) => {
+                switch(direction) {
                 case 'space':
-                    switch(selectorX) {
+
+                    switch(selector.x) {
                         case 0:
                             spriteImage = 'images/char-boy.png'
                         break;
@@ -198,24 +188,37 @@ var Engine = (function(global) {
                             spriteImage = 'images/char-princess-girl.png'
                     }
                     global.player = new Player(303, 7*83, spriteImage);
+                    selector.resetHandleInput = null;
                     lastTime = Date.now();
                     main();                     
                 break;
                 case 'left':
-                    if (selectorX != 0) {
-                        selectorX -= 101;
+                    if (selector.x != 0) {
+                        selector.x -= 101;
                     };
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     win.requestAnimationFrame(renderMenu);
                 break;
                 case 'right':
-                    if (selectorX != 404) {
-                        selectorX += 101;
+                    if (selector.x != 404) {
+                        selector.x += 101;
                     };
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     win.requestAnimationFrame(renderMenu);
-            };
+                };
+            }
+        };
+
+        let renderMenu = function () {
+            ctx.drawImage(Resources.get('images/Selector.png'), selector.x, 166);
+            ctx.drawImage(Resources.get('images/char-boy.png'), 0, 166);
+            ctx.drawImage(Resources.get('images/char-cat-girl.png'), 101, 166);
+            ctx.drawImage(Resources.get('images/char-horn-girl.png'), 202, 166);
+            ctx.drawImage(Resources.get('images/char-pink-girl.png'), 303, 166);
+            ctx.drawImage(Resources.get('images/char-princess-girl.png'), 404, 166);
+
         }
+        renderMenu();
 
 
         document.addEventListener('keyup', function(e) {
@@ -224,7 +227,7 @@ var Engine = (function(global) {
                 37: 'left',
                 39: 'right'
             };
-            resetHandleInput(allowedKeys[e.keyCode]);
+            selector.resetHandleInput(allowedKeys[e.keyCode]);
         });
   
     };

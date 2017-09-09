@@ -83,10 +83,10 @@ Player.prototype.handleInput = function(exp){
 // let Enemy = function(x, y, speedx)
 // canvas 505x606, 1square 101x83
 let allEnemies = [
-    new Enemy(0, 83, 150),
+    new Enemy(0, 83, 300),
     new Enemy(0, 4*83, 165),
     new Enemy(0, 2*83, 215),
-    new Enemy(101, 3*83, 160), 
+    new Enemy(101, 3*83, 265), 
     new Enemy(101, 6*83, 190),
     new Enemy(101, 5*83, 230),
     new Enemy(202, 2*83, 185),
@@ -99,10 +99,6 @@ let allEnemies = [
     new Enemy(606, 5*83, 195),
     new Enemy(707, 6*83, 210)
     ];
-
-
-
-
 
 
 // This listens for key presses and sends the keys to your
