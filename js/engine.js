@@ -143,13 +143,23 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
-        /* This array holds the relative URL to the image used
-         * for that particular row of the game level.
-         */
+        //draws level
         lvlOne();
+
+        //checks to see if game's won
         for (var i = 0; i < allTargets.length; i++) {
             if (player.x == allTargets[i].x && player.y == allTargets[i].y) {
-                ctx.fillText("YOU WIN", 200, 200);
+                ctx.drawImage(Resources.get(player.sprite), 404, 5*83)
+                ctx.fillText("YOU'RE A SUPERSTAR", 300, 332);
+                document.removeEventListener('keyup', function(e) {
+                    let allowedKeys = {
+                        37: 'left',
+                        38: 'up',
+                        39: 'right',
+                        40: 'down'
+                    };
+                    player.handleInput(allowedKeys[e.keyCode]);
+                });
             } 
             else {
                 renderEntities();
@@ -182,8 +192,8 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
-
-        let spriteImage;
+        global.player = new Player(303, 7*83, null);
+        let spriteImage = null;
         let selector = {
             x: 303,
             resetHandleInput: (direction) => {
@@ -207,7 +217,6 @@ var Engine = (function(global) {
                             spriteImage = 'images/char-princess-girl.png'
                     }
                     global.player = new Player(303, 7*83, spriteImage);
-                    selector.resetHandleInput = null;
                     lastTime = Date.now();
                     main();                     
                 break;
@@ -226,25 +235,27 @@ var Engine = (function(global) {
 
         let renderMenu = function () {
             lvlOne();
-            ctx.drawImage(Resources.get('images/Selector.png'), selector.x, 166);
-            ctx.drawImage(Resources.get('images/char-boy.png'), 101, 166);
-            ctx.drawImage(Resources.get('images/char-cat-girl.png'), 202, 166);
-            ctx.drawImage(Resources.get('images/char-horn-girl.png'), 303, 166);
-            ctx.drawImage(Resources.get('images/char-pink-girl.png'), 404, 166);
-            ctx.drawImage(Resources.get('images/char-princess-girl.png'), 505, 166);
+            ctx.drawImage(Resources.get('images/Selector.png'), selector.x, 3*83);
+            ctx.drawImage(Resources.get('images/char-boy.png'), 101, 3*83);
+            ctx.drawImage(Resources.get('images/char-cat-girl.png'), 202, 3*83);
+            ctx.drawImage(Resources.get('images/char-horn-girl.png'), 303, 3*83);
+            ctx.drawImage(Resources.get('images/char-pink-girl.png'), 404, 3*83);
+            ctx.drawImage(Resources.get('images/char-princess-girl.png'), 505, 3*83);
+            ctx.fillText("USE SPACE BAR TO SELECT CHRARACTER, USE ARROW KEYS TO MOVE.", 168, 6*83)
             win.requestAnimationFrame(renderMenu);
         }
         renderMenu();
 
-
-        document.addEventListener('keyup', function(e) {
-            let allowedKeys = {
-                32: 'space',
-                37: 'left',
-                39: 'right'
-            };
-            selector.resetHandleInput(allowedKeys[e.keyCode]);
-        });
+        if (spriteImage === null) {
+            document.addEventListener('keyup', function(e) {
+                    let allowedKeys = {
+                        32: 'space',
+                        37: 'left',
+                        39: 'right'
+                    };
+                selector.resetHandleInput(allowedKeys[e.keyCode]);
+            });
+        }
   
     };
 

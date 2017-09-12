@@ -11,9 +11,7 @@ let Enemy = function(x, y, speedx) {
 
 // Updates the enemy's position when offscreen
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+
     //Reset enemies position once off screen
     if (this.x > 808) {
         this.x = -101;
@@ -30,10 +28,10 @@ Enemy.prototype.render = function() {
 
 
 //Player class
-let Player =  function(x, y, sprite) {
+let Player =  function(x, y, spriteImage) {
 	this.x = x,
 	this.y = y,
-	this.sprite = sprite
+	this.sprite = spriteImage
 };
 
 
