@@ -47,7 +47,6 @@ Player.prototype.update = function() {
         };
 };
 
-
 //Draws player
 Player.prototype.render = function() {
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -87,11 +86,12 @@ let Target = function(x, y, image) {
 }
 
 Target.prototype.update = function() {
-    //put some type of image effect
+
 };
 
 Target.prototype.render = function() {
     ctx.drawImage(Resources.get(this.image), this.x, this.y);
+
 };
 
 

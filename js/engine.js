@@ -65,49 +65,10 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
-
-        
     }
 
-    /* This function is called by main (our game loop) and itself calls all
-     * of the functions which may need to update entity's data. Based on how
-     * you implement your collision detection (when two entities occupy the
-     * same space, for instance when your character should die), you may find
-     * the need to add an additional function call here. For now, we've left
-     * it commented out - you may or may not want to implement this
-     * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
-     */
-    function update(dt) {
-        updateEntities(dt);
-        // checkCollisions();
-    }
-
-    /* This is called by the update function and loops through all of the
-     * objects within your allEnemies array as defined in app.js and calls
-     * their update() methods. It will then call the update function for your
-     * player object. These update methods should focus purely on updating
-     * the data/properties related to the object. Do your drawing in your
-     * render methods.
-     */
-    function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
-        });
-        player.update();
-    }
-
-    /* This function initially draws the "game level", it will then call
-     * the renderEntities function. Remember, this function is called every
-     * game tick (or loop of the game engine) because that's how games work -
-     * they are flipbooks creating the illusion of animation but in reality
-     * they are just drawing the entire screen over and over.
-     */
-    function render() {
-        /* This array holds the relative URL to the image used
-         * for that particular row of the game level.
-         */
-        var rowImages = [
+    function lvlOne() {
+                var rowImages = [
                 'images/grass-block.png',   // Top row is water
                 'images/stone-block.png',   // Row 1 of 3 of stone
                 'images/stone-block.png',   // Row 2 of 3 of stone
@@ -138,9 +99,62 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
+    }
 
+    
 
-        renderEntities();
+    /* This function is called by main (our game loop) and itself calls all
+     * of the functions which may need to update entity's data. Based on how
+     * you implement your collision detection (when two entities occupy the
+     * same space, for instance when your character should die), you may find
+     * the need to add an additional function call here. For now, we've left
+     * it commented out - you may or may not want to implement this
+     * functionality this way (you could just implement collision detection
+     * on the entities themselves within your app.js file).
+     */
+    function update(dt) {
+        updateEntities(dt);
+        // checkCollisions();
+    }
+
+    /* This is called by the update function and loops through all of the
+     * objects within your allEnemies array as defined in app.js and calls
+     * their update() methods. It will then call the update function for your
+     * player object. These update methods should focus purely on updating
+     * the data/properties related to the object. Do your drawing in your
+     * render methods.
+     */
+    function updateEntities(dt) {
+        allEnemies.forEach(function(enemy) {
+            enemy.update(dt);
+        });
+
+        allTargets.forEach(function(target) {
+            target.update();
+        });
+
+        player.update();
+    }
+
+    /* This function initially draws the "game level", it will then call
+     * the renderEntities function. Remember, this function is called every
+     * game tick (or loop of the game engine) because that's how games work -
+     * they are flipbooks creating the illusion of animation but in reality
+     * they are just drawing the entire screen over and over.
+     */
+    function render() {
+        /* This array holds the relative URL to the image used
+         * for that particular row of the game level.
+         */
+        lvlOne();
+        for (var i = 0; i < allTargets.length; i++) {
+            if (player.x == allTargets[i].x && player.y == allTargets[i].y) {
+                ctx.fillText("YOU WIN", 200, 200);
+            } 
+            else {
+                renderEntities();
+            }
+        }
     }
 
     /* This function is called by the render function and is called on each game
@@ -168,27 +182,28 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+
         let spriteImage;
         let selector = {
-            x: 0,
+            x: 303,
             resetHandleInput: (direction) => {
                 switch(direction) {
                 case 'space':
 
                     switch(selector.x) {
-                        case 0:
+                        case 101:
                             spriteImage = 'images/char-boy.png'
                         break;
-                        case 101:
+                        case 202:
                             spriteImage = 'images/char-cat-girl.png'
                         break;
-                        case 202:
+                        case 303:
                             spriteImage = 'images/char-horn-girl.png'
                         break;
-                        case 303:
+                        case 404:
                             spriteImage = 'images/char-pink-girl.png'
                         break;
-                        case 404:
+                        case 505:
                             spriteImage = 'images/char-princess-girl.png'
                     }
                     global.player = new Player(303, 7*83, spriteImage);
@@ -197,30 +212,27 @@ var Engine = (function(global) {
                     main();                     
                 break;
                 case 'left':
-                    if (selector.x != 0) {
+                    if (selector.x != 101) {
                         selector.x -= 101;
                     };
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    win.requestAnimationFrame(renderMenu);
                 break;
                 case 'right':
-                    if (selector.x != 404) {
+                    if (selector.x != 505) {
                         selector.x += 101;
                     };
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    win.requestAnimationFrame(renderMenu);
                 };
             }
         };
 
         let renderMenu = function () {
+            lvlOne();
             ctx.drawImage(Resources.get('images/Selector.png'), selector.x, 166);
-            ctx.drawImage(Resources.get('images/char-boy.png'), 0, 166);
-            ctx.drawImage(Resources.get('images/char-cat-girl.png'), 101, 166);
-            ctx.drawImage(Resources.get('images/char-horn-girl.png'), 202, 166);
-            ctx.drawImage(Resources.get('images/char-pink-girl.png'), 303, 166);
-            ctx.drawImage(Resources.get('images/char-princess-girl.png'), 404, 166);
-
+            ctx.drawImage(Resources.get('images/char-boy.png'), 101, 166);
+            ctx.drawImage(Resources.get('images/char-cat-girl.png'), 202, 166);
+            ctx.drawImage(Resources.get('images/char-horn-girl.png'), 303, 166);
+            ctx.drawImage(Resources.get('images/char-pink-girl.png'), 404, 166);
+            ctx.drawImage(Resources.get('images/char-princess-girl.png'), 505, 166);
+            win.requestAnimationFrame(renderMenu);
         }
         renderMenu();
 
@@ -235,6 +247,8 @@ var Engine = (function(global) {
         });
   
     };
+
+
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
