@@ -1,7 +1,7 @@
-// canvas 505x606, 1square 100x81
+// canvas 808x581, 1square 100x83
 
 // Enemy class
-let Enemy = function(x, y, speedx) {
+var Enemy = function(x, y, speedx) {
     this.x = x,
     this.y = y,
     this.speedx = (Math.random() + 1)*speedx,
@@ -28,7 +28,7 @@ Enemy.prototype.render = function() {
 
 
 //Player class
-let Player =  function(x, y, spriteImage) {
+var Player =  function(x, y, spriteImage) {
 	this.x = x,
 	this.y = y,
 	this.sprite = spriteImage
@@ -37,7 +37,7 @@ let Player =  function(x, y, spriteImage) {
 
 //player-enemy collision detection
 Player.prototype.update = function() {
-    for (let i = 0; i < allEnemies.length; i++) {
+    for (var i = 0; i < allEnemies.length; i++) {
                 if (this.y == allEnemies[i].y && this.x + 60 > allEnemies[i].x && this.x < allEnemies[i].x + 60) {
                     this.x = 303;
                     this.y = 7*83;
@@ -77,7 +77,7 @@ Player.prototype.handleInput = function(exp){
 };
 
 
-let Target = function(x, y, image) {
+var Target = function(x, y, image) {
     this.x = x,
     this.y = y,
     this.image = image
@@ -92,41 +92,45 @@ Target.prototype.render = function() {
 
 };
 
+//instantiates player, null until character is selected
+player = new Player(303, 7*83, null);
 
-
-// let Enemy = function(x, y, speedx)
-// canvas 505x606, 1square 101x83
-let allEnemies = [
+// var Enemy = function(x, y, speedx)
+// canvas 8*101x7*83, 1square 101x83
+var allEnemies = [
     new Enemy(0, 83, 300),
-    new Enemy(0, 4*83, 350),
-    new Enemy(0, 2*83, 400),
-    new Enemy(101, 3*83, 265), 
-    new Enemy(101, 6*83, 190),
-    new Enemy(101, 5*83, 350),
-    new Enemy(202, 2*83, 185),
-    new Enemy(202, 3*83, 220),
-    new Enemy(303, 83, 370),
-    new Enemy(404, 2*83, 185), 
-    new Enemy(404, 3*83, 245),
-    new Enemy(505, 4*83, 175),
-    new Enemy(606, 6*83, 200),
-    new Enemy(606, 5*83, 195),
+    new Enemy(303, 83, 350),
+    new Enemy(606, 83, 400),
+    new Enemy(101, 2*83, 265), 
+    new Enemy(505, 2*83, 190),
+    new Enemy(707, 2*83, 350),
+    new Enemy(202, 3*83, 185),
+    new Enemy(404, 3*83, 220),
+    new Enemy(606, 3*83, 370),
+    new Enemy(0, 4*83, 185), 
+    new Enemy(303, 4*83, 245),
+    new Enemy(606, 4*83, 325),
+    new Enemy(202, 5*83, 200),
+    new Enemy(505, 5*83, 250),
+    new Enemy(808, 5*83, 210),
+    new Enemy(101, 6*83, 290),
+    new Enemy(404, 6*83, 250),
     new Enemy(707, 6*83, 210)
     ];
 
-//Let Targets = function(x, y, image)
-let allTargets = [
+//var Targets = function(x, y, image)
+var allTargets = [
     new Target(303, 0, 'images/Star.png'),
-]
+];
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method.
-document.addEventListener('keyup', function(e) {
-    let allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+// This listens for key presses and sends the keys to Player.handleInput() method.
+    document.addEventListener('keyup', function(e) {
+        var allowedKeys = {
+            32: "space",
+            37: 'left',
+            38: 'up',
+            39: 'right',
+            40: 'down'
+        };
+        player.handleInput(allowedKeys[e.keyCode]);
+    });
